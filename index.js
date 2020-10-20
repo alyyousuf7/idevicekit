@@ -92,7 +92,11 @@ class iDeviceClient extends EventEmitter {
         defaultOption = extend(true, defaultOption, option);
         const args = ['-u', serial, defaultOption['command']]
         if (('key' in defaultOption) && (defaultOption['key'])) {
-            args.push(defaultOption['key']);
+            if (Array.isArray(defaultOption['key'])) {
+                args.push(...defaultOption['key']);
+            } else {
+                args.push(defaultOption['key']);
+            }
         }
         return exec('idevicediagnostics', args).then((stdout) => {
             try {
